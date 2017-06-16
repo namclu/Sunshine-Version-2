@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +55,9 @@ public class MainActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        // Global variables
+        ArrayAdapter<String> mForecastAdapter;
+
         public PlaceholderFragment() {
         }
 
@@ -62,7 +66,7 @@ public class MainActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
 
             // Create some dummy data for the ListView.  Here's a sample weekly forecast
-            String[] data = {
+            String[] weekForecast = {
                     "Mon 6/23 - Sunny - 31/17",
                     "Tue 6/24 - Foggy - 21/8",
                     "Wed 6/25 - Cloudy - 22/17",
@@ -72,7 +76,13 @@ public class MainActivity extends ActionBarActivity {
                     "Sun 6/29 - Sunny - 20/7"
             };
 
-            List<String> forecastList = new ArrayList<String>(Arrays.asList(data));
+            List<String> forecastList = new ArrayList<String>(Arrays.asList(weekForecast));
+
+            mForecastAdapter = new ArrayAdapter<String>(
+                    getActivity(),                  // Current context
+                    R.layout.list_item_forecast,    // Layout resource ID
+                    R.id.list_view_forecast,        // TextView resource ID
+                    weekForecast);                  // String[] objects
 
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
