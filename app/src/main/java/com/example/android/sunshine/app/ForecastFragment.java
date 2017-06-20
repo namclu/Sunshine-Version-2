@@ -30,6 +30,8 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    private static final String LOG = ForecastFragment.class.getSimpleName();
+
     // Global variables
     private ArrayAdapter<String> mForecastAdapter;
 
@@ -141,6 +143,9 @@ public class ForecastFragment extends Fragment {
                     forecastJsonStr = null;
                 }
                 forecastJsonStr = buffer.toString();
+
+                // Log message for testing
+                Log.v(LOG, "Forecast JSON string: " + forecastJsonStr);
             } catch (IOException e) {
                 Log.e(TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting
