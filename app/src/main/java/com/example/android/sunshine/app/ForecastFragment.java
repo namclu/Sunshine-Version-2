@@ -72,7 +72,7 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] weekForecast = {
+        String[] dummyData = {
                 "Mon 6/23 - Sunny - 31/17",
                 "Tue 6/24 - Foggy - 21/8",
                 "Wed 6/25 - Cloudy - 22/17",
@@ -82,7 +82,7 @@ public class ForecastFragment extends Fragment {
                 "Sun 6/29 - Sunny - 20/7"
         };
 
-        List<String> forecastList = new ArrayList<String>(Arrays.asList(weekForecast));
+        List<String> weekForecast = new ArrayList<String>(Arrays.asList(dummyData));
 
         mForecastAdapter = new ArrayAdapter<String>(
                 getActivity(),                      // Current context
@@ -196,9 +196,6 @@ public class ForecastFragment extends Fragment {
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
-            for (String s : resultStrs) {
-                Log.v(TAG, "Forecast entry: " + s);
-            }
             return resultStrs;
         }
 
@@ -280,8 +277,6 @@ public class ForecastFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
-                // Log message for testing
-                Log.v(TAG, "Forecast JSON string: " + forecastJsonStr);
             } catch (IOException e) {
                 Log.e(TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting
@@ -309,6 +304,15 @@ public class ForecastFragment extends Fragment {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] weatherResults) {
+            // super.onPostExecute(weatherResult);
+            if (weatherResults != null) {
+                mForecastAdapter.clear();
+                mForecastAdapter.addAll(weatherResults);
+            }
         }
     }
 }
