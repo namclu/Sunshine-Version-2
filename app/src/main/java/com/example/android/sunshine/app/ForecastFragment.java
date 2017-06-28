@@ -39,6 +39,8 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    public static final String EXTRA_FORECAST = "com.example.android.FORECAST";
+
     // Global variables
     private ArrayAdapter<String> mForecastAdapter;
 
@@ -105,7 +107,7 @@ public class ForecastFragment extends Fragment {
                 String forecast = mForecastAdapter.getItem(position);
 
                 Intent detailIntent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                        .putExtra(EXTRA_FORECAST, forecast);
                 startActivity(detailIntent);
             }
         });
