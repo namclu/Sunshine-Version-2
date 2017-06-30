@@ -31,8 +31,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by namlu on 6/18/2017.
@@ -67,13 +65,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                // Get location from SharedPreferences
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String location = prefs.getString(
-                        getString(R.string.pref_location_key),
-                        getString(R.string.pref_location_default));
-
-                new FetchWeatherTask().execute(location);
+                updateWeather();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -83,24 +75,13 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] dummyData = {
-                "Mon 6/23 - Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
-
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(dummyData));
-
+        // ArrayAdapter will take data from a source and use it to populate
+        // the ListView it's attached to
         mForecastAdapter = new ArrayAdapter<String>(
                 getActivity(),                      // Current context
                 R.layout.list_item_forecast,        // Layout resource ID
                 R.id.textview_list_item_forecast,   // TextView resource ID
-                weekForecast);                      // String[] objects
+                new ArrayList<String>());           // String[] objects
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -121,6 +102,22 @@ public class ForecastFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    public void updateWeather() {
+        // Get location from SharedPreferences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        new FetchWeatherTask().execute(location);
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
