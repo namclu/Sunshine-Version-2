@@ -10,4 +10,11 @@
         android:inputType="text"
         android:singleLine="true"/>
 
+    <ListPreference
+        android:title="@string/pref_temp_units_label"
+        android:key="@string/pref_temp_units_key"
+        android:defaultValue="@string/pref_temp_units_metric"
+        android:entries="@array/pref_temp_units_options"
+        android:entryValues="@array/pref_temp_units_values"/>
+
 </PreferenceScreen>
