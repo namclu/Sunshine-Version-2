@@ -138,7 +138,15 @@ public class ForecastFragment extends Fragment {
         /**
          * Prepare the weather high/lows for presentation.
          */
-        private String formatHighLows(double high, double low) {
+        private String formatHighLows(double high, double low, String unitType) {
+
+            // If temperature units == imperial, convert metric to imperial
+            if (unitType.equals(getString(R.string.pref_temperature_units_imperial))) {
+                high = (high * 1.8) + 32;
+                low = (low * 1.8) + 32;
+            } else if (!unitType.equals(getString(R.string.pref_temperature_units_metric))) {
+                Log.d(TAG, "Unit type not found: " + unitType);
+            }
             // For presentation, assume the user doesn't care about tenths of a degree.
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
@@ -213,7 +221,14 @@ public class ForecastFragment extends Fragment {
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
-                highAndLow = formatHighLows(high, low);
+                // Get the preference for temperature units
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String unitType = sharedPreferences.getString(
+                        getString(R.string.pref_temperature_units_key),
+                        getString(R.string.pref_temperature_units_metric));
+
+                highAndLow = formatHighLows(high, low, unitType);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
