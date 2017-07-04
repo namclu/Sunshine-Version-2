@@ -11,9 +11,4 @@
         android:id="@+id/action_map_location"
         android:title="@string/action_map"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_item_share"
-        app:showAsAction="ifRoom"
-        android:title="Share"
-        android:actionProviderClass="android.widget.ShareActionProvider"/>
 </menu>
